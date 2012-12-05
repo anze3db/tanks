@@ -41,33 +41,33 @@ object Main extends App with GLEventListener {
   override def display(drawable:GLAutoDrawable) = {
     
     val gl = drawable.getGL().getGL2ES2();
-    
-    gl.glEnable(GL_DEPTH_TEST)
-    gl.glClearColor(1, 1, 1, 1)
-    gl.glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    gl.glUseProgram(program.program)
-    gl.glUniform1i(program.samplerLoc, 0)
-    gl.glBindTexture(GL_TEXTURE_2D, program.texture)
+    import gl._
+    glEnable(GL_DEPTH_TEST)
+    glClearColor(0, 0f, 0, 1f);
+    glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glUseProgram(program.program)
+    glUniform1i(program.samplerLoc, 0)
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, program.texture)
     
     val ratio = WIDTH / HEIGHT;
     var model_view_projection = new Array[Float](16); // Gets sent to the
     var model_projection = new Array[Float](16);
     
-    Matrix.setLookAtM(model_projection, 0, 0, 0, -3, 0, 0, 0, 0, 1, 0);
-    Matrix.frustumM(model_view_projection, 0, -ratio, ratio, -1, 1, 2, 6);
+    Matrix.setLookAtM(model_projection, 0, 0, 0, -4, 0, 0, 0, 0, 1, 0);
+    Matrix.frustumM(model_view_projection, 0, -ratio, ratio, -1, 1, 3, 7);
     
     //Matrix.rotateM(model_projection, 0, -smoothDirection / 1.5f, 0, 1f, 0f);
 
     var projection = new Array[Float](16);
     Matrix.multiplyMM(projection, 0, model_view_projection, 0, model_projection, 0);
-        
-    gl.glUniformMatrix4fv(program.projectionMatrixLoc, 1, false, projection, 0);
+    glUniformMatrix4fv(program.projectionMatrixLoc, 1, false, projection, 0);
 
-    gl.glEnable(GL_BLEND);
-    gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     Game.tick(System.currentTimeMillis() - t0)
-    Game.draw()
+    Game.draw(gl)
     t0 = System.currentTimeMillis()
     
   }

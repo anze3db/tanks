@@ -22,19 +22,18 @@ class GlProgram (val gl:GL) {
   
   createShader(vertShader, Shaders.vertex)
   createShader(fragShader, Shaders.fragment)
+  link()
   
   val positionLoc = gl.glGetAttribLocation(program, "attribute_Position")
   val colorLoc    = gl.glGetAttribLocation(program, "attribute_Color")
   val texLoc      = gl.glGetAttribLocation(program, "a_texCoord")
-  
+
   val projectionMatrixLoc = gl.glGetUniformLocation(program, "uniform_Projection")
   val modelMatrixLoc      = gl.glGetUniformLocation(program, "uniform_Model")
   val samplerLoc          = gl.glGetUniformLocation(program, "s_texture")
   val isTextLoc           = gl.glGetUniformLocation(program, "u_isText")
-  
   val texture = loadTexture("/res/text.png")
   
-  link()
   
   private def loadTexture(tex:String) = {
     var texture = new Array[Int](1)
