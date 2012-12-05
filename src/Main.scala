@@ -38,6 +38,8 @@ object Main extends App with GLEventListener {
     v += new Vec(3,2,1)
     v.print()
     
+    (v + new Vec(3,3,3) + new Vec(3,1,3)).print()
+    
   }
   override def display(drawable:GLAutoDrawable) = {
   }
