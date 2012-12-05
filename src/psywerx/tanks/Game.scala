@@ -3,8 +3,9 @@ package psywerx.tanks
 import javax.media.opengl.{GL2ES2 => GL}
 
 object Game {
+  
   val program = Main.program
-  val gl = program.gl
+  
   init()
   val s = new Square()
   
@@ -13,9 +14,9 @@ object Game {
     
   }
   def tick(theta:Double) = {
-    
+    s.tick(theta)
   }
-  def draw(gl:GL) = {
-    s.draw(gl)
+  def draw() = {
+    s.draw()
   }
 }

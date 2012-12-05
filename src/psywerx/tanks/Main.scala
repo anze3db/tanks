@@ -30,18 +30,19 @@ object Main extends App with GLEventListener {
   private val animator = new Animator(glWindow);
   animator.add(glWindow);
   animator.start();
-  
-  
+
   private var t0 = System.currentTimeMillis()
   
   override def init(drawable:GLAutoDrawable) = {
     val gl = drawable.getGL().getGL2ES2();
     program = new GlProgram(gl)
   }
+  
   override def display(drawable:GLAutoDrawable) = {
     
     val gl = drawable.getGL().getGL2ES2();
     import gl._
+    
     glEnable(GL_DEPTH_TEST)
     glClearColor(0, 0f, 0, 1f);
     glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -67,7 +68,7 @@ object Main extends App with GLEventListener {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     Game.tick(System.currentTimeMillis() - t0)
-    Game.draw(gl)
+    Game.draw()
     t0 = System.currentTimeMillis()
     
   }
@@ -85,7 +86,7 @@ class KeyHandler extends KeyListener{
     
   }
   override def keyPressed(key:KeyEvent) = {
-    println(key.getKeyChar())
+
   }
   override def keyReleased(key:KeyEvent) = {
     

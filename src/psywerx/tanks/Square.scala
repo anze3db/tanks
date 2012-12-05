@@ -3,16 +3,19 @@ package psywerx.tanks
 import java.nio.Buffer
 import com.jogamp.common.nio.Buffers
 import javax.media.opengl.GL._
-import javax.media.opengl.{GL2ES2 => GL}
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class Square {
-  val program = Game.program
+  
+  import Game.program._
+  import gl._
 
   var modelMatrix = new Array[Float](16)
   Matrix.setIdentityM(modelMatrix, 0)
-  val vertices = Array[Float](1.0f, -1.0f, 0.0f, // Bottom Right
-                -1.0f, -1.0f, 0.0f, // Bottom Left
-                1.0f, 1.0f, 0.0f, // Top Right
+  val vertices = Array[Float](1.0f, -1.0f, 0.0f,
+                -1.0f, -1.0f, 0.0f,
+                1.0f, 1.0f, 0.0f, 
                 -1.0f, 1.0f, 0.0f)
   val colors = Array[Float](0.0f, 0.0f, 0.0f, 1.0f,
     0.0f, 1.0f, 0.0f, 0.0f,
@@ -22,38 +25,37 @@ class Square {
     0.0f, 0.0f,
     0.0f, 0.0f,
     0.0f, 0.0f)
+    
+  val vertBuffer  = Buffers.newDirectFloatBuffer(vertices)
+  val colorBuffer  = Buffers.newDirectFloatBuffer(colors)
+  val texBuffer  = Buffers.newDirectFloatBuffer(textures)
 
-  def tick(theta: Long) = {
-
+  def tick(theta:Double) = {
   }
 
-  def draw(gl:GL) = {
-    gl.glUniformMatrix4fv(program.modelMatrixLoc, 1, false, modelMatrix, 0)
+  def draw() = {
+    glUniformMatrix4fv(modelMatrixLoc, 1, false, modelMatrix, 0)
+    Matrix.rotateM(modelMatrix, 0, 0.01f, 0, 0, 1)
     
-    var fb = Buffers.newDirectFloatBuffer(vertices);
     
-    gl.glVertexAttribPointer(program.positionLoc, 3, GL_FLOAT, false, 0, fb)
-    gl.glEnableVertexAttribArray(program.positionLoc)
+    glVertexAttribPointer(positionLoc, 3, GL_FLOAT, false, 0, vertBuffer)
+    glEnableVertexAttribArray(positionLoc)
     
-    fb = Buffers.newDirectFloatBuffer(colors);
+    glVertexAttribPointer(colorLoc, 4, GL_FLOAT, false, 0, colorBuffer);
+    glEnableVertexAttribArray(colorLoc);
     
-    gl.glVertexAttribPointer(program.colorLoc, 4, GL_FLOAT, false, 0, fb);
-    gl.glEnableVertexAttribArray(program.colorLoc);
-    
-    fb = Buffers.newDirectFloatBuffer(textures);
-    
-    gl.glVertexAttribPointer(program.texLoc, 2, GL_FLOAT, false, 0, fb);
-    gl.glEnableVertexAttribArray(program.texLoc);
+    glVertexAttribPointer(texLoc, 2, GL_FLOAT, false, 0, texBuffer);
+    glEnableVertexAttribArray(texLoc);
 
-    gl.glActiveTexture(GL_TEXTURE0);
-    gl.glBindTexture(GL_TEXTURE_2D, program.texture);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
     
-    gl.glUniform1f(program.isTextLoc, 1.0f);
+    glUniform1f(isTextLoc, 1.0f);
     
-    gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
-    gl.glDisableVertexAttribArray(program.positionLoc);
-    gl.glDisableVertexAttribArray(program.colorLoc);
-    gl.glDisableVertexAttribArray(program.texLoc);
+    glDisableVertexAttribArray(positionLoc);
+    glDisableVertexAttribArray(colorLoc);
+    glDisableVertexAttribArray(texLoc);
   }
 }
