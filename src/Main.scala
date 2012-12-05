@@ -4,6 +4,8 @@ import com.jogamp.newt.opengl.GLWindow
 import com.jogamp.opengl.util.Animator
 import javax.media.opengl.GLEventListener
 import javax.media.opengl.GLAutoDrawable
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 
 object Main extends App with GLEventListener {
   var WIDTH = 600
@@ -19,24 +21,43 @@ object Main extends App with GLEventListener {
   glWindow.setPointerVisible(true)
   glWindow.setVisible(true)
   glWindow.addGLEventListener(Main)
+  glWindow.addKeyListener(new KeyHandler());
   
   val animator = new Animator(glWindow);
   animator.add(glWindow);
   animator.start();
   
-  def init(drawable:GLAutoDrawable) = {
+  override def init(drawable:GLAutoDrawable) = {
     val gl = drawable.getGL().getGL2ES2();
-    println("init")
-    
+    var v = new Vec(1,2,3)
+    v.print()
+    v += 5
+    v.print()
+    v -= 2
+    v.print()
+    v += new Vec(3,2,1)
+    v.print()
     
   }
-  def display(drawable:GLAutoDrawable) = {
+  override def display(drawable:GLAutoDrawable) = {
   }
-  def reshape(drawable:GLAutoDrawable, x:Int, y:Int, w:Int, h:Int) = {
+  override def reshape(drawable:GLAutoDrawable, x:Int, y:Int, w:Int, h:Int) = {
     
   }
-  def dispose(drawable:GLAutoDrawable) = {
+  override def dispose(drawable:GLAutoDrawable) = {
     println("Exit")
     System.exit(0);
+  }
+}
+
+class KeyHandler extends KeyListener{
+  override def keyTyped(key:KeyEvent) = {
+    
+  }
+  override def keyPressed(key:KeyEvent) = {
+    println(key.getKeyChar())
+  }
+  override def keyReleased(key:KeyEvent) = {
+    
   }
 }
