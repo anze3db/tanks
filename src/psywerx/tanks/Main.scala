@@ -1,3 +1,5 @@
+package psywerx.tanks;
+
 import javax.media.opengl.GLCapabilities
 import javax.media.opengl.GLProfile
 import com.jogamp.newt.opengl.GLWindow
@@ -28,17 +30,7 @@ object Main extends App with GLEventListener {
   animator.start();
   
   override def init(drawable:GLAutoDrawable) = {
-    val gl = drawable.getGL().getGL2ES2();
-    var v = new Vec(1,2,3)
-    v.print()
-    v += 5
-    v.print()
-    v -= 2
-    v.print()
-    v += new Vec(3,2,1)
-    v.print()
-    
-    (v + new Vec(3,3,3) + new Vec(3,1,3)).print()
+      
     
   }
   override def display(drawable:GLAutoDrawable) = {
@@ -47,7 +39,6 @@ object Main extends App with GLEventListener {
     
   }
   override def dispose(drawable:GLAutoDrawable) = {
-    println("Exit")
     System.exit(0);
   }
 }

@@ -1,3 +1,5 @@
+package psywerx.tanks;
+
 class Vec(var x: Float, var y: Float, var z: Float) {
   def +=(a: Float) = {
     x += a; y += a; z += a;
