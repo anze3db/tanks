@@ -13,6 +13,9 @@ class Square {
 
   var modelMatrix = new Array[Float](16)
   Matrix.setIdentityM(modelMatrix, 0)
+  
+  val tex = new Texture()
+  
   val vertices = Array[Float](1.0f, -1.0f, 0.0f,
                 -1.0f, -1.0f, 0.0f,
                 1.0f, 1.0f, 0.0f, 
@@ -43,7 +46,6 @@ class Square {
     colors(4) = 0.999f*colors(4) + 0.001f*Main.test
     colors(8) = 0.99f*colors(0) + 0.01f*Main.test
     colors(12) = 0.99f*colors(4) + 0.01f*Main.test
-    println(colors(0))
     
   }
 
@@ -64,7 +66,7 @@ class Square {
     glVertexAttribPointer(colorLoc, 4, GL_FLOAT, false, 0, colorBuffer);
     glEnableVertexAttribArray(colorLoc);
     
-    texBuffer.put(textures);
+    texBuffer.put(tex.getTextureUV);
     texBuffer.flip();
     
     glVertexAttribPointer(texLoc, 2, GL_FLOAT, false, 0, texBuffer);
@@ -73,7 +75,7 @@ class Square {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     
-    glUniform1f(isTextLoc, 1.0f);
+    glUniform1f(isTextLoc, tex.enabled);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     

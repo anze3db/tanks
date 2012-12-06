@@ -44,7 +44,7 @@ object Main extends App with GLEventListener {
     import gl._
     
     glEnable(GL_DEPTH_TEST)
-    glClearColor(0, 0f, 0, 1f);
+    glClearColor(1f, 0f, 0, 1f);
     glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glUseProgram(program.program)
     glUniform1i(program.samplerLoc, 0)

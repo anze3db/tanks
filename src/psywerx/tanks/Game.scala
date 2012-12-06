@@ -8,12 +8,13 @@ object Game {
   
   init()
   val s = new Square()
+  s.tex.setSpriteFromChar('A')
   
   
   def init() = {
-    
   }
   def tick(theta:Float) = {
+    s.tex.setSpriteFromChar('Z')
     s.tick(theta)
   }
   def draw() = {
