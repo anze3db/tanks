@@ -37,7 +37,7 @@ object Main extends App with GLEventListener {
     val gl = drawable.getGL().getGL2ES2();
     program = new GlProgram(gl)
   }
-  
+  var test = 0
   override def display(drawable:GLAutoDrawable) = {
     
     val gl = drawable.getGL().getGL2ES2();
@@ -67,7 +67,7 @@ object Main extends App with GLEventListener {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    Game.tick(System.currentTimeMillis() - t0)
+    Game.tick((System.currentTimeMillis() - t0).floatValue())
     Game.draw()
     t0 = System.currentTimeMillis()
     
@@ -86,7 +86,10 @@ class KeyHandler extends KeyListener{
     
   }
   override def keyPressed(key:KeyEvent) = {
-
+      if(key.getKeyChar() == 'a'){
+        if(Main.test == 0) Main.test = 1
+        else Main.test = 0
+      }
   }
   override def keyReleased(key:KeyEvent) = {
     

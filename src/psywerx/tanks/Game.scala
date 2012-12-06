@@ -13,7 +13,7 @@ object Game {
   def init() = {
     
   }
-  def tick(theta:Double) = {
+  def tick(theta:Float) = {
     s.tick(theta)
   }
   def draw() = {
