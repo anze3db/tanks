@@ -7,12 +7,12 @@ class Texture {
   var size    = (1, 1)
   def setSpriteFromChar(c:Char) = {
     val charIndex = c.charValue() - 32
-    sprite = ((charIndex % NUM_SPRITES), math.floor(charIndex.toDouble / NUM_SPRITES.toDouble).toInt)
+    sprite = ((charIndex % NUM_SPRITES), math.floor(charIndex / NUM_SPRITES).toInt)
   }
   def getTextureUV:Array[Float] = {
     val charWidth:(Float,Float) = (0.0625f * size._1, 0.0625f * size._2)
-    val u = (sprite._1/size._1).floatValue
-    val v = (sprite._2/size._2).floatValue
+    val u:Float = (sprite._1/size._1)
+    val v:Float = (sprite._2/size._2)
     Array[Float]((u + 1f)*charWidth._1, v*charWidth._2, 
                   u*charWidth._1, v*charWidth._2, 
                   (u + 1)*charWidth._1, (v + 1)*charWidth._2, 

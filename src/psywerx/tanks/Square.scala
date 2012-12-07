@@ -24,10 +24,6 @@ class Square {
     0.0f, 0.0f, 0.0f, 1.0f,
     0.0f, 1.0f, 0.0f, 1.0f,
     0.0f, 1.0f, 0.0f, 1.0f)
-  val textures = Array[Float](0.0f, 0.0f,
-    0.0f, 0.0f,
-    0.0f, 0.0f,
-    0.0f, 0.0f)
   
   private var vbb = ByteBuffer.allocateDirect(vertices.length * 4);
   vbb.order(ByteOrder.nativeOrder());
@@ -37,7 +33,7 @@ class Square {
   vbb.order(ByteOrder.nativeOrder());
   val colorBuffer  = vbb.asFloatBuffer();
   
-  vbb = ByteBuffer.allocateDirect(textures.length * 4);
+  vbb = ByteBuffer.allocateDirect(2 * 4 * 4);
   vbb.order(ByteOrder.nativeOrder());
   val texBuffer  = vbb.asFloatBuffer();
 
