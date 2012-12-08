@@ -1,2 +1,4 @@
 tanks*.jar
 .cache
+.worksheet
+*.sc

@@ -19,7 +19,7 @@ object Shaders {
       }
     }
   """
-  
+
   val vertex = """
     precision mediump float;  // Precision Qualifiers
     precision mediump int;    // GLSL ES section 4.5.2
