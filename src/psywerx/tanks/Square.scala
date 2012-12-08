@@ -11,72 +11,68 @@ class Square {
   import Game.program._
   import gl._
 
-  var modelMatrix = new Array[Float](16)
+  val tex = new Texture()
+  var color = new Color(0,0,0,1)
+  var size = 0.1f
+  var position = new Vec(0,0,0)
+
+  val vertices = Array[Float](1.0f, -1.0f, 0.0f,
+          -1.0f, -1.0f, 0.0f,
+           1.0f, 1.0f, 0.0f, 
+          -1.0f, 1.0f, 0.0f)
+  private var modelMatrix = new Array[Float](16)
   Matrix.setIdentityM(modelMatrix, 0)
   
-  val tex = new Texture()
+  private var vbb = ByteBuffer.allocateDirect(3 * 4 * 4)
+  vbb.order(ByteOrder.nativeOrder())
+  private val vertBuffer  = vbb.asFloatBuffer()
   
-  val vertices = Array[Float](1.0f, -1.0f, 0.0f,
-                -1.0f, -1.0f, 0.0f,
-                1.0f, 1.0f, 0.0f, 
-                -1.0f, 1.0f, 0.0f)
-  val colors = Array[Float](0.0f, 0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 0.0f, 1.0f,
-    0.0f, 1.0f, 0.0f, 1.0f,
-    0.0f, 1.0f, 0.0f, 1.0f)
+  vbb = ByteBuffer.allocateDirect(4 * 4 * 4)
+  vbb.order(ByteOrder.nativeOrder())
+  private val colorBuffer  = vbb.asFloatBuffer()
   
-  private var vbb = ByteBuffer.allocateDirect(vertices.length * 4);
-  vbb.order(ByteOrder.nativeOrder());
-  val vertBuffer  = vbb.asFloatBuffer();
-  
-  vbb = ByteBuffer.allocateDirect(colors.length * 4);
-  vbb.order(ByteOrder.nativeOrder());
-  val colorBuffer  = vbb.asFloatBuffer();
-  
-  vbb = ByteBuffer.allocateDirect(2 * 4 * 4);
-  vbb.order(ByteOrder.nativeOrder());
-  val texBuffer  = vbb.asFloatBuffer();
+  vbb = ByteBuffer.allocateDirect(2 * 4 * 4) // 2 = for u and v, 4 for 4 edges
+  vbb.order(ByteOrder.nativeOrder())
+  private val texBuffer  = vbb.asFloatBuffer()
 
   def tick(theta:Float) = {
-    colors(0) = 0.999f*colors(0) + 0.001f*Main.test
-    colors(4) = 0.999f*colors(4) + 0.001f*Main.test
-    colors(8) = 0.99f*colors(0) + 0.01f*Main.test
-    colors(12) = 0.99f*colors(4) + 0.01f*Main.test
-    
   }
 
   def draw() = {
     glUniformMatrix4fv(modelMatrixLoc, 1, false, modelMatrix, 0)
-    Matrix.rotateM(modelMatrix, 0, 0.01f, 0, 0, 1)
+    Matrix.setIdentityM(modelMatrix, 0)
+    Matrix.translateM(modelMatrix, 0, modelMatrix, 0, position.x, position.y, position.z)
     
-    
-    vertBuffer.put(vertices);
-    vertBuffer.flip();
+    vertBuffer.put(vertices.map(_ * size))
+    vertBuffer.flip()
     
     glVertexAttribPointer(positionLoc, 3, GL_FLOAT, false, 0, vertBuffer)
     glEnableVertexAttribArray(positionLoc)
     
-    colorBuffer.put(colors);
-    colorBuffer.flip();
+    colorBuffer.put(Array[Float](color.r, color.g, color.b, color.a,
+    color.r, color.g, color.b, color.a,
+    color.r, color.g, color.b, color.a,
+    color.r, color.g, color.b, color.a))
+    colorBuffer.flip()
     
-    glVertexAttribPointer(colorLoc, 4, GL_FLOAT, false, 0, colorBuffer);
-    glEnableVertexAttribArray(colorLoc);
+    glVertexAttribPointer(colorLoc, 4, GL_FLOAT, false, 0, colorBuffer)
+    glEnableVertexAttribArray(colorLoc)
     
-    texBuffer.put(tex.getTextureUV);
-    texBuffer.flip();
+    texBuffer.put(tex.getTextureUV)
+    texBuffer.flip()
     
-    glVertexAttribPointer(texLoc, 2, GL_FLOAT, false, 0, texBuffer);
-    glEnableVertexAttribArray(texLoc);
+    glVertexAttribPointer(texLoc, 2, GL_FLOAT, false, 0, texBuffer)
+    glEnableVertexAttribArray(texLoc)
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glActiveTexture(GL_TEXTURE0)
+    glBindTexture(GL_TEXTURE_2D, texture)
     
-    glUniform1f(isTextLoc, tex.enabled);
+    glUniform1f(isTextLoc, tex.enabled)
     
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
     
-    glDisableVertexAttribArray(positionLoc);
-    glDisableVertexAttribArray(colorLoc);
-    glDisableVertexAttribArray(texLoc);
+    glDisableVertexAttribArray(positionLoc)
+    glDisableVertexAttribArray(colorLoc)
+    glDisableVertexAttribArray(texLoc)
   }
 }

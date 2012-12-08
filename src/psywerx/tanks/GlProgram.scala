@@ -17,8 +17,8 @@ class GlProgram (val gl:GL) {
   
   val program = gl.glCreateProgram()
   
-  private val vertShader = gl.glCreateShader(GL.GL_VERTEX_SHADER);
-  private val fragShader = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
+  private val vertShader = gl.glCreateShader(GL.GL_VERTEX_SHADER)
+  private val fragShader = gl.glCreateShader(GL.GL_FRAGMENT_SHADER)
   
   createShader(vertShader, Shaders.vertex)
   createShader(fragShader, Shaders.fragment)
@@ -66,12 +66,12 @@ class GlProgram (val gl:GL) {
     gl.glGetShaderiv(shader, GL.GL_COMPILE_STATUS, compiled, 0)
     if (compiled(0) == 0){
       var logLength = Array[Int](0);
-      gl.glGetShaderiv(shader, GL.GL_INFO_LOG_LENGTH, logLength, 0);
+      gl.glGetShaderiv(shader, GL.GL_INFO_LOG_LENGTH, logLength, 0)
         
       var log = Array[Byte](0);
-      gl.glGetShaderInfoLog(shader, logLength(0), null, 0, log, 0);
+      gl.glGetShaderInfoLog(shader, logLength(0), null, 0, log, 0)
         
-        println("Error compiling the shader: " + new String(log));
+        println("Error compiling the shader: " + new String(log))
         System.exit(1);
     }
     gl.glAttachShader(program, shader)
@@ -81,12 +81,12 @@ class GlProgram (val gl:GL) {
   }
   
   def dispose() = {
-    gl.glUseProgram(program);
-    gl.glDetachShader(program, vertShader);
-    gl.glDeleteShader(vertShader);
-    gl.glDetachShader(program, fragShader);
-    gl.glDeleteShader(fragShader);
-    gl.glDeleteProgram(program);
+    gl.glUseProgram(program)
+    gl.glDetachShader(program, vertShader)
+    gl.glDeleteShader(vertShader)
+    gl.glDetachShader(program, fragShader)
+    gl.glDeleteShader(fragShader)
+    gl.glDeleteProgram(program)
   }
   
   

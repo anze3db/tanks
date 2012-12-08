@@ -27,57 +27,57 @@ object Main extends App with GLEventListener {
   glWindow.addGLEventListener(Main)
   glWindow.addKeyListener(new KeyHandler());
   
-  private val animator = new Animator(glWindow);
-  animator.add(glWindow);
-  animator.start();
+  private val animator = new Animator(glWindow)
+  animator.add(glWindow)
+  animator.start()
 
   private var t0 = System.currentTimeMillis()
   
   override def init(drawable:GLAutoDrawable) = {
-    val gl = drawable.getGL().getGL2ES2();
+    val gl = drawable.getGL().getGL2ES2()
     program = new GlProgram(gl)
   }
   var test = 0
   override def display(drawable:GLAutoDrawable) = {
     
-    val gl = drawable.getGL().getGL2ES2();
+    val gl = drawable.getGL().getGL2ES2()
     import gl._
     
     glEnable(GL_DEPTH_TEST)
-    glClearColor(1f, 0f, 0, 1f);
+    glClearColor(1f, 0f, 0, 1f)
     glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glUseProgram(program.program)
     glUniform1i(program.samplerLoc, 0)
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0)
     glBindTexture(GL_TEXTURE_2D, program.texture)
     
-    val ratio = WIDTH / HEIGHT;
-    var model_view_projection = new Array[Float](16); // Gets sent to the
-    var model_projection = new Array[Float](16);
+    val ratio = WIDTH.toFloat / HEIGHT.toFloat
+    var model_view_projection = new Array[Float](16) // Gets sent to the
+    var model_projection = new Array[Float](16)
     
-    Matrix.setLookAtM(model_projection, 0, 0, 0, -4, 0, 0, 0, 0, 1, 0);
-    Matrix.frustumM(model_view_projection, 0, -ratio, ratio, -1, 1, 3, 7);
+    Matrix.setLookAtM(model_projection, 0, 0, 0, -1f, 0, 0, 0, 0, 1, 0)
+    Matrix.frustumM(model_view_projection, 0, ratio, -ratio, -1, 1, 0.9999f, 40)
     
     //Matrix.rotateM(model_projection, 0, -smoothDirection / 1.5f, 0, 1f, 0f);
 
-    var projection = new Array[Float](16);
-    Matrix.multiplyMM(projection, 0, model_view_projection, 0, model_projection, 0);
-    glUniformMatrix4fv(program.projectionMatrixLoc, 1, false, projection, 0);
+    var projection = new Array[Float](16)
+    Matrix.multiplyMM(projection, 0, model_view_projection, 0, model_projection, 0)
+    glUniformMatrix4fv(program.projectionMatrixLoc, 1, false, projection, 0)
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     
-    Game.tick((System.currentTimeMillis() - t0).floatValue())
+    Game.tick((System.currentTimeMillis() - t0))
     Game.draw()
     t0 = System.currentTimeMillis()
     
   }
   override def reshape(drawable:GLAutoDrawable, x:Int, y:Int, w:Int, h:Int) = {
-    
+    WIDTH = w; HEIGHT = h
   }
   override def dispose(drawable:GLAutoDrawable) = {
     program.dispose()
-    System.exit(0);
+    System.exit(0)
   }
 }
 
